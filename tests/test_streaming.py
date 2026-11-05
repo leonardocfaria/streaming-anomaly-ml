@@ -1,4 +1,6 @@
 import random
+
+import pytest
 import urllib.request
 
 from streaming.evaluate import summarise
@@ -34,15 +36,42 @@ def test_model_updates_per_event_but_not_on_anomalies():
     assert d.updates == n_updates + 1 and d.models[0].mean != before  # normal event: one update
 
 
-def test_drift_handling_stops_false_alarms_and_keeps_catching_anomalies():
-    kw = dict(n=12000, seed=3, shift_at=6000)
-    with_dh = summarise(run(events(**kw), Detector(2))[0], 6000)
+@pytest.mark.parametrize("seed", [3, 5, 7])  # not the seeds used to choose ph_delta (0-2)
+def test_drift_handling_stops_false_alarms_and_keeps_catching_anomalies(seed):
+    kw = dict(n=12000, seed=seed, shift_at=6000)
+    det = Detector(2)
+    with_dh = summarise(run(events(**kw), det)[0], 6000)
     without = summarise(run(events(**kw), Detector(2, drift_handling=False))[0], 6000)
     # without drift handling the model never adapts: nearly every post-shift event is a false alarm
     assert without["later_after_drift"]["false_alarms"] > 5000
-    # with it, the detector re-learns within the first window and is quiet afterwards
-    assert with_dh["later_after_drift"]["false_alarms"] < 20
+    # with it: one detection right after the shift, a bounded blind period (relearn = 50 events), then quiet
+    assert len(det.drifts) == 1 and 6000 <= det.drifts[0] < 6030
+    assert det.blind == 200 + 50  # warm-up + one relearn window: the only events not judged
+    assert with_dh["first_after_drift"]["false_alarms"] < 10 and with_dh["later_after_drift"]["false_alarms"] < 10
     assert with_dh["later_after_drift"]["recall"] > 0.8 and with_dh["before_drift"]["recall"] > 0.8
+
+
+def test_relearn_ignores_spikes_in_the_buffer():
+    d = Detector(1, warmup=50)
+    rows = [[100.0 + (i % 7)] for i in range(49)] + [[10_000.0]]  # one huge spike inside the warm-up buffer
+    for r in rows:
+        d.process(r)
+    assert abs(d.models[0].mean - 103) < 2 and d.models[0].var ** 0.5 < 5  # median/MAD: the spike is ignored
+
+
+def test_pipeline_failure_raises_instead_of_hanging():
+    class Boom(Detector):
+        def process(self, x):
+            raise RuntimeError("model crashed")
+
+    def bad_stream():
+        yield 0, [1.0, 1.0], False
+        raise OSError("source died")
+
+    with pytest.raises(RuntimeError):
+        run(events(5000), Boom(2), maxsize=2)  # consumer fails while the producer still has 5000 events
+    with pytest.raises(OSError):
+        run(bad_stream(), Detector(2))
 
 
 def test_pipeline_processes_every_event_in_order_and_serves_metrics():

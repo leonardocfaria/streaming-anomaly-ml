@@ -9,6 +9,6 @@ Build "Streaming ML: online anomaly detection". Build a streaming pipeline (Redp
 - [x] drift handling demonstrated in a test
 - [x] Tests pass with one command; CI workflow runs them
 - [x] README with setup, usage, architecture and results
-- [ ] Self code review done
+- [x] Self code review done
 - [ ] Draft PR open
 

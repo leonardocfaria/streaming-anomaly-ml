@@ -24,13 +24,13 @@
       "false_alarms": 0,
       "events": 9500
     },
-    "events_per_s": 129057,
+    "events_per_s": 126420,
     "drifts_detected_at": [
       10006
     ],
-    "model_updates": 19697,
+    "model_updates": 19648,
     "last_false_alarm_after_shift": 4,
-    "prometheus": "stream_events_total 20000\nstream_anomalies_total 102\nstream_drift_detections_total 1\nstream_queue_depth 1\nstream_processing_seconds_sum 0.061824\nstream_processing_seconds_count 20000\n"
+    "prometheus": "# TYPE stream_events_total counter\nstream_events_total 20000\n# TYPE stream_anomalies_total counter\nstream_anomalies_total 102\n# TYPE stream_drift_detections_total counter\nstream_drift_detections_total 1\n# TYPE stream_queue_depth gauge\nstream_queue_depth 1\n# TYPE stream_processing_seconds summary\nstream_processing_seconds_sum 0.081322\nstream_processing_seconds_count 20000\n"
   },
   "drift handling OFF": {
     "overall": {
@@ -57,10 +57,10 @@
       "false_alarms": 9453,
       "events": 9500
     },
-    "events_per_s": 183412,
+    "events_per_s": 216107,
     "drifts_detected_at": [],
     "model_updates": 9752,
     "last_false_alarm_after_shift": 9999,
-    "prometheus": "stream_events_total 20000\nstream_anomalies_total 10048\nstream_drift_detections_total 0\nstream_queue_depth 0\nstream_processing_seconds_sum 0.025421\nstream_processing_seconds_count 20000\n"
+    "prometheus": "# TYPE stream_events_total counter\nstream_events_total 20000\n# TYPE stream_anomalies_total counter\nstream_anomalies_total 10048\n# TYPE stream_drift_detections_total counter\nstream_drift_detections_total 0\n# TYPE stream_queue_depth gauge\nstream_queue_depth 0\n# TYPE stream_processing_seconds summary\nstream_processing_seconds_sum 0.021714\nstream_processing_seconds_count 20000\n"
   }
 }
