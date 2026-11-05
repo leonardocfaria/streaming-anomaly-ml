@@ -1,0 +1,66 @@
+{
+  "drift handling ON": {
+    "overall": {
+      "precision": 0.9509803921568627,
+      "recall": 0.9897959183673469,
+      "false_alarms": 5,
+      "events": 20000
+    },
+    "before_drift": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "false_alarms": 0,
+      "events": 10000
+    },
+    "first_after_drift": {
+      "precision": 0.2857142857142857,
+      "recall": 0.6666666666666666,
+      "false_alarms": 5,
+      "events": 500
+    },
+    "later_after_drift": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "false_alarms": 0,
+      "events": 9500
+    },
+    "events_per_s": 129057,
+    "drifts_detected_at": [
+      10006
+    ],
+    "model_updates": 19697,
+    "last_false_alarm_after_shift": 4,
+    "prometheus": "stream_events_total 20000\nstream_anomalies_total 102\nstream_drift_detections_total 1\nstream_queue_depth 1\nstream_processing_seconds_sum 0.061824\nstream_processing_seconds_count 20000\n"
+  },
+  "drift handling OFF": {
+    "overall": {
+      "precision": 0.009753184713375796,
+      "recall": 1.0,
+      "false_alarms": 9950,
+      "events": 20000
+    },
+    "before_drift": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "false_alarms": 0,
+      "events": 10000
+    },
+    "first_after_drift": {
+      "precision": 0.006,
+      "recall": 1.0,
+      "false_alarms": 497,
+      "events": 500
+    },
+    "later_after_drift": {
+      "precision": 0.004947368421052632,
+      "recall": 1.0,
+      "false_alarms": 9453,
+      "events": 9500
+    },
+    "events_per_s": 183412,
+    "drifts_detected_at": [],
+    "model_updates": 9752,
+    "last_false_alarm_after_shift": 9999,
+    "prometheus": "stream_events_total 20000\nstream_anomalies_total 10048\nstream_drift_detections_total 0\nstream_queue_depth 0\nstream_processing_seconds_sum 0.025421\nstream_processing_seconds_count 20000\n"
+  }
+}
