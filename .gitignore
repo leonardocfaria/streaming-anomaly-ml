@@ -1,0 +1,15 @@
+.env*
+*.pem
+*.key
+id_*
+credentials*
+*.sqlite
+*.db
+__pycache__/
+.venv/
+venv/
+node_modules/
+*.egg-info/
+.pytest_cache/
+mlruns/
+data/raw/
